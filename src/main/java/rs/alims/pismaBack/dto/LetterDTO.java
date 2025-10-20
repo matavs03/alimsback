@@ -13,10 +13,11 @@ import java.util.List;
  * @author lazar
  */
 public class LetterDTO {
+
     private Long id;
     private String title;
     private String description;
-    private String content;
+    private String fileName;
     private LocalDateTime date;
     private String adminName;
     private List<String> medicationNames;
@@ -26,11 +27,31 @@ public class LetterDTO {
     public LetterDTO() {
     }
 
-    public LetterDTO(Long id, String title, String description, String content, LocalDateTime date, String adminName, List<String> medicationNames) {
+    public LetterDTO(Long id, String title, String description, String fileName, LocalDateTime date, String adminName, List<String> medicationNames, Long adminId, List<String> medicationIds) {
         this.id = id;
         this.title = title;
         this.description = description;
-        this.content = content;
+        this.fileName = fileName;
+        this.date = date;
+        this.adminName = adminName;
+        this.medicationNames = medicationNames;
+        this.adminId = adminId;
+        this.medicationIds = medicationIds;
+    }
+
+    public LetterDTO(
+            Long id,
+            String title,
+            String description,
+            String fileName,
+            LocalDateTime date,
+            String adminName,
+            List<String> medicationNames
+    ) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.fileName = fileName;
         this.date = date;
         this.adminName = adminName;
         this.medicationNames = medicationNames;
@@ -60,12 +81,12 @@ public class LetterDTO {
         this.description = description;
     }
 
-    public String getContent() {
-        return content;
+    public String getFileName() {
+        return fileName;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
     public LocalDateTime getDate() {
@@ -107,6 +128,5 @@ public class LetterDTO {
     public void setMedicationIds(List<String> medicationIds) {
         this.medicationIds = medicationIds;
     }
-    
-    
+
 }

@@ -4,6 +4,7 @@
  */
 package rs.alims.pismaBack.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -26,36 +27,44 @@ import java.util.List;
 @Entity
 @Table(name = "letter")
 public class Letter {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private  String title;
+
+    private String title;
+
     private String description;
+
     @Lob
-    private String content;
+    @Column(name = "content", columnDefinition = "LONGBLOB")
+    private byte[] content;
+
+    private String fileName;
+
     private LocalDateTime date;
-    
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "admin_id")
     private Admin admin;
-    
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-    name = "letter_medication",
-        joinColumns = @JoinColumn(name = "letter_id"),
-        inverseJoinColumns = @JoinColumn(name = "medication_id")
+            name = "letter_medication",
+            joinColumns = @JoinColumn(name = "letter_id"),
+            inverseJoinColumns = @JoinColumn(name = "medication_id")
     )
     private List<Medication> medications = new ArrayList<>();
 
     public Letter() {
     }
 
-    public Letter(Long id, String title, String description, String content, LocalDateTime date, Admin admin) {
+    public Letter(Long id, String title, String description, byte[] content, String fileName, LocalDateTime date, Admin admin) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.content = content;
+        this.fileName = fileName;
         this.date = date;
         this.admin = admin;
     }
@@ -84,12 +93,20 @@ public class Letter {
         this.description = description;
     }
 
-    public String getContent() {
+    public byte[] getContent() {
         return content;
     }
 
-    public void setContent(String content) {
+    public void setContent(byte[] content) {
         this.content = content;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
     public LocalDateTime getDate() {
@@ -115,7 +132,7 @@ public class Letter {
     public void setMedications(List<Medication> medications) {
         this.medications = medications;
     }
+
     
-    
-    
+
 }

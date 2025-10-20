@@ -4,10 +4,12 @@
  */
 package rs.alims.pismaBack.service;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import rs.alims.pismaBack.dto.LetterDTO;
 import rs.alims.pismaBack.model.Admin;
 import rs.alims.pismaBack.model.Letter;
@@ -32,6 +34,7 @@ public class LetterService {
     @Autowired
     private MedicationRepository medicationRepository;
 
+    // ✅ 1. Vraćanje svih pisama (DTO)
     public List<LetterDTO> getAllLettersDTO() {
         return letterRepository.findAll()
                 .stream()
@@ -39,6 +42,7 @@ public class LetterService {
                 .toList();
     }
 
+    // ✅ 2. Konverzija iz entiteta u DTO
     public LetterDTO convertToDTO(Letter letter) {
         List<String> medNames = letter.getMedications()
                 .stream()
@@ -49,19 +53,25 @@ public class LetterService {
                 letter.getId(),
                 letter.getTitle(),
                 letter.getDescription(),
-                letter.getContent(),
+                letter.getFileName(), // 👈 umesto letter.getContent()
                 letter.getDate(),
                 letter.getAdmin().getFirstName() + " " + letter.getAdmin().getLastName(),
                 medNames
         );
     }
 
-    public Letter createLetterFromDTO(LetterDTO dto) {
+    // ✅ 3. Kreiranje pisma iz DTO + PDF (poziva se iz Controller-a)
+    public Letter createLetterFromDTO(LetterDTO dto, MultipartFile file) throws IOException {
         Letter letter = new Letter();
         letter.setTitle(dto.getTitle());
         letter.setDescription(dto.getDescription());
-        letter.setContent(dto.getContent());
         letter.setDate(LocalDateTime.now());
+
+        // 👇 sad PDF fajl pretvaramo u bajtove i čuvamo
+        if (file != null && !file.isEmpty()) {
+            letter.setFileName(file.getOriginalFilename());
+            letter.setContent(file.getBytes());
+        }
 
         Admin admin = adminRepository.findById(dto.getAdminId())
                 .orElseThrow(() -> new RuntimeException("Admin not found"));
@@ -73,3 +83,4 @@ public class LetterService {
         return letterRepository.save(letter);
     }
 }
+
