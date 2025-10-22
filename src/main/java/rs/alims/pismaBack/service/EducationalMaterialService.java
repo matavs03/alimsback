@@ -19,9 +19,11 @@ import rs.alims.pismaBack.dto.FileDTO;
 import rs.alims.pismaBack.model.Admin;
 import rs.alims.pismaBack.model.EducationalMaterial;
 import rs.alims.pismaBack.model.MaterialFile;
+import rs.alims.pismaBack.model.Medication;
 import rs.alims.pismaBack.repository.AdminRepository;
 import rs.alims.pismaBack.repository.EducationalMaterialRepository;
 import rs.alims.pismaBack.repository.MaterialFileRepository;
+import rs.alims.pismaBack.repository.MedicationRepository;
 
 /**
  *
@@ -32,6 +34,9 @@ public class EducationalMaterialService {
 
     @Autowired
     private AdminRepository adminRepository;
+
+    @Autowired
+    private MedicationRepository medicationRepository;
 
     @Autowired
     private EducationalMaterialRepository materialRepository;
@@ -56,6 +61,13 @@ public class EducationalMaterialService {
                 admin
         );
 
+        // 🔹 Poveži lekove
+        if (dto.getMedicationIds() != null && !dto.getMedicationIds().isEmpty()) {
+            List<Medication> meds = medicationRepository.findAllById(dto.getMedicationIds());
+            material.setMedications(meds);
+        }
+
+        // 🔹 Poveži fajlove
         List<MaterialFile> fileEntities = new ArrayList<>();
         for (MultipartFile file : files) {
             MaterialFile mf = new MaterialFile(file.getOriginalFilename(), file.getContentType(), file.getBytes());
@@ -72,6 +84,14 @@ public class EducationalMaterialService {
                 .map(f -> new FileDTO(f.getFileName(), f.getFileType()))
                 .collect(Collectors.toList());
 
+        List<String> medicationNames = material.getMedications().stream()
+                .map(Medication::getName)
+                .collect(Collectors.toList());
+
+        List<String> medicationIds = material.getMedications().stream()
+                .map(Medication::getId)
+                .collect(Collectors.toList());
+
         return new EducationalMaterialDTO(
                 material.getId(),
                 material.getTitle(),
@@ -79,7 +99,9 @@ public class EducationalMaterialService {
                 material.getDate(),
                 material.getAdmin().getUsername(),
                 material.getAdmin().getId(),
-                fileDTOs
+                fileDTOs,
+                medicationNames,
+                medicationIds
         );
     }
 
