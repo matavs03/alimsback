@@ -26,7 +26,7 @@ import rs.alims.pismaBack.service.EducationalMaterialService;
  */
 @RestController
 @RequestMapping("/api/v1/materials")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:5173")
 public class EducationalMaterialController {
 
     @Autowired

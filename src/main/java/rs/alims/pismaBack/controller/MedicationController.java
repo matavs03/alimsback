@@ -22,7 +22,10 @@ import rs.alims.pismaBack.repository.MedicationRepository;
  */
 @RestController
 @RequestMapping("/api/v1/")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {
+    "http://localhost:4200",   // Angular
+    "http://localhost:5173"
+})
 public class MedicationController {
     
     @Autowired

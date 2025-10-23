@@ -81,7 +81,7 @@ public class EducationalMaterialService {
 
     public EducationalMaterialDTO convertToDTO(EducationalMaterial material) {
         List<FileDTO> fileDTOs = material.getFiles().stream()
-                .map(f -> new FileDTO(f.getFileName(), f.getFileType()))
+                .map(f -> new FileDTO(f.getId(), f.getFileName(), f.getFileType()))
                 .collect(Collectors.toList());
 
         List<String> medicationNames = material.getMedications().stream()

@@ -10,21 +10,41 @@ package rs.alims.pismaBack.dto;
  */
 
 public class FileDTO {
+    private Long id;
     private String fileName;
     private String fileType;
 
     public FileDTO() {}
 
-    public FileDTO(String fileName, String fileType) {
+    public FileDTO(Long id, String fileName, String fileType) {
+        this.id = id;
         this.fileName = fileName;
         this.fileType = fileType;
     }
 
-    public String getFileName() { return fileName; }
+    public Long getId() {
+        return id;
+    }
 
-    public void setFileName(String fileName) { this.fileName = fileName; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public String getFileType() { return fileType; }
+    public String getFileName() {
+        return fileName;
+    }
 
-    public void setFileType(String fileType) { this.fileType = fileType; }
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public String getFileType() {
+        return fileType;
+    }
+
+    public void setFileType(String fileType) {
+        this.fileType = fileType;
+    }
+
+    
 }
