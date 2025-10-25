@@ -34,7 +34,6 @@ public class LetterService {
     @Autowired
     private MedicationRepository medicationRepository;
 
-    // ✅ 1. Vraćanje svih pisama (DTO)
     public List<LetterDTO> getAllLettersDTO() {
         return letterRepository.findAll()
                 .stream()
@@ -42,7 +41,6 @@ public class LetterService {
                 .toList();
     }
 
-    // ✅ 2. Konverzija iz entiteta u DTO
     public LetterDTO convertToDTO(Letter letter) {
         List<String> medNames = letter.getMedications()
                 .stream()
@@ -60,14 +58,11 @@ public class LetterService {
         );
     }
 
-    // ✅ 3. Kreiranje pisma iz DTO + PDF (poziva se iz Controller-a)
     public Letter createLetterFromDTO(LetterDTO dto, MultipartFile file) throws IOException {
         Letter letter = new Letter();
         letter.setTitle(dto.getTitle());
         letter.setDescription(dto.getDescription());
         letter.setDate(LocalDateTime.now());
-
-        // 👇 sad PDF fajl pretvaramo u bajtove i čuvamo
         if (file != null && !file.isEmpty()) {
             letter.setFileName(file.getOriginalFilename());
             letter.setContent(file.getBytes());

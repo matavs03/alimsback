@@ -45,7 +45,6 @@ public class EducationalMaterial {
     @OneToMany(mappedBy = "educationalMaterial", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<MaterialFile> files = new ArrayList<>();
 
-    // 🔹 Nova ManyToMany relacija sa lekovima
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "educational_material_medication",
@@ -63,7 +62,6 @@ public class EducationalMaterial {
         this.admin = admin;
     }
 
-    // --- Getteri i setteri ---
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

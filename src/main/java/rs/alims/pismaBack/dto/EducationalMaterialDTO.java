@@ -22,7 +22,7 @@ public class EducationalMaterialDTO {
     private Long adminId;
     private List<FileDTO> files;
 
-    // 🔹 Novo:
+
     private List<String> medicationNames;
     private List<String> medicationIds;
 

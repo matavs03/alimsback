@@ -61,13 +61,13 @@ public class EducationalMaterialService {
                 admin
         );
 
-        // 🔹 Poveži lekove
+ 
         if (dto.getMedicationIds() != null && !dto.getMedicationIds().isEmpty()) {
             List<Medication> meds = medicationRepository.findAllById(dto.getMedicationIds());
             material.setMedications(meds);
         }
 
-        // 🔹 Poveži fajlove
+        
         List<MaterialFile> fileEntities = new ArrayList<>();
         for (MultipartFile file : files) {
             MaterialFile mf = new MaterialFile(file.getOriginalFilename(), file.getContentType(), file.getBytes());
